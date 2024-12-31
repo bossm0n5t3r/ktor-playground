@@ -48,3 +48,11 @@ Content-Type: application/json
   "description": "Cook the dinner",
   "priority": "High"
 }
+
+### Delete Task by Name (When the name is not found)
+
+DELETE localhost:8080/tasks/unknown
+
+### Delete Task by Name (When the name is found)
+
+DELETE localhost:8080/tasks/cleaning
