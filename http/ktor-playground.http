@@ -5,3 +5,7 @@ GET localhost:8080/
 ### Json Kotlinx Serialization
 
 GET localhost:8080/json/kotlinx-serialization
+
+### Get Tasks
+
+GET localhost:8080/tasks
