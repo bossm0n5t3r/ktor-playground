@@ -37,3 +37,14 @@ GET localhost:8080/tasks/byPriority/High
 ### Get Task by Priority (When task is empty)
 
 GET localhost:8080/tasks/byPriority/Vital
+
+### Post Task
+
+POST localhost:8080/tasks
+Content-Type: application/json
+
+{
+  "name": "cooking",
+  "description": "Cook the dinner",
+  "priority": "High"
+}
