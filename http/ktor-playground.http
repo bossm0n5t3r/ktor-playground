@@ -9,3 +9,31 @@ GET localhost:8080/json/kotlinx-serialization
 ### Get Tasks
 
 GET localhost:8080/tasks
+
+### Get Task by Name (When the name is not found)
+
+GET localhost:8080/tasks/byName/
+
+### Get Task by Name (When task is unknown)
+
+GET localhost:8080/tasks/byName/unknown
+
+### Get Task by Name (When task is found)
+
+GET localhost:8080/tasks/byName/cleaning
+
+### Get Task by Priority (When the priority is not found)
+
+GET localhost:8080/tasks/byPriority/
+
+### Get Task by Priority (When the priority is unknown)
+
+GET localhost:8080/tasks/byPriority/unknown
+
+### Get Task by Priority (When the priority is found)
+
+GET localhost:8080/tasks/byPriority/High
+
+### Get Task by Priority (When task is empty)
+
+GET localhost:8080/tasks/byPriority/Vital
