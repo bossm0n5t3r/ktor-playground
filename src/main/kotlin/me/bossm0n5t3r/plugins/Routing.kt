@@ -1,4 +1,4 @@
-package me.bossm0n5t3r
+package me.bossm0n5t3r.plugins
 
 import io.ktor.http.HttpStatusCode
 import io.ktor.serialization.JsonConvertException
