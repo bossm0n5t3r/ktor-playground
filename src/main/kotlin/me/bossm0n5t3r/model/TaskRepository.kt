@@ -1,13 +1,15 @@
 package me.bossm0n5t3r.model
 
 object TaskRepository {
-    private val tasks =
-        mutableListOf(
+    private val DEFAULT_TASKS =
+        listOf(
             Task("cleaning", "Clean the house", Priority.Low),
             Task("gardening", "Mow the lawn", Priority.Medium),
             Task("shopping", "Buy the groceries", Priority.High),
             Task("painting", "Paint the fence", Priority.Medium),
         )
+
+    private val tasks = DEFAULT_TASKS.toMutableList()
 
     fun allTasks(): List<Task> = tasks
 
@@ -26,4 +28,9 @@ object TaskRepository {
     }
 
     fun removeTask(name: String): Boolean = tasks.removeIf { it.name == name }
+
+    fun resetAllTasks() {
+        tasks.clear()
+        tasks.addAll(DEFAULT_TASKS)
+    }
 }

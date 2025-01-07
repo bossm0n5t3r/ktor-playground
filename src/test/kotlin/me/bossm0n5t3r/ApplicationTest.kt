@@ -2,6 +2,10 @@ package me.bossm0n5t3r
 
 import io.ktor.client.call.body
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.websocket.DefaultClientWebSocketSession
+import io.ktor.client.plugins.websocket.WebSockets
+import io.ktor.client.plugins.websocket.converter
+import io.ktor.client.plugins.websocket.webSocket
 import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.client.request.post
@@ -10,16 +14,34 @@ import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
+import io.ktor.serialization.deserialize
+import io.ktor.serialization.kotlinx.KotlinxWebsocketSerializationConverter
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.testing.testApplication
+import kotlinx.coroutines.flow.consumeAsFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.scan
+import kotlinx.serialization.json.Json
 import me.bossm0n5t3r.model.Priority
 import me.bossm0n5t3r.model.Task
+import me.bossm0n5t3r.model.TaskRepository
+import me.bossm0n5t3r.plugins.configureRouting
+import me.bossm0n5t3r.plugins.configureSerialization
+import me.bossm0n5t3r.plugins.configureSockets
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.BeforeEach
 import kotlin.test.Test
 import kotlin.test.assertContains
 import kotlin.test.assertContentEquals
 import kotlin.test.assertEquals
 
 class ApplicationTest {
+    @BeforeEach
+    @AfterEach
+    fun clear() {
+        TaskRepository.resetAllTasks()
+    }
+
     @Test
     fun testRoot() =
         testApplication {
@@ -110,4 +132,54 @@ class ApplicationTest {
 
             assertContains(taskNames, "swimming")
         }
+
+    @Test
+    fun testWebSocketRoot() =
+        testApplication {
+            application {
+                configureRouting()
+                configureSerialization()
+                configureSockets()
+            }
+
+            val client =
+                createClient {
+                    install(ContentNegotiation) {
+                        json()
+                    }
+                    install(WebSockets) {
+                        contentConverter =
+                            KotlinxWebsocketSerializationConverter(Json)
+                    }
+                }
+
+            val expectedTasks =
+                listOf(
+                    Task("cleaning", "Clean the house", Priority.Low),
+                    Task("gardening", "Mow the lawn", Priority.Medium),
+                    Task("shopping", "Buy the groceries", Priority.High),
+                    Task("painting", "Paint the fence", Priority.Medium),
+                )
+            var actualTasks = emptyList<Task>()
+
+            client.webSocket("/websocket/tasks") {
+                consumeTasksAsFlow().collect { allTasks ->
+                    actualTasks = allTasks
+                }
+            }
+
+            assertEquals(expectedTasks.size, actualTasks.size)
+            expectedTasks.forEachIndexed { index, task ->
+                assertEquals(task, actualTasks[index])
+            }
+        }
+
+    private fun DefaultClientWebSocketSession.consumeTasksAsFlow() =
+        incoming
+            .consumeAsFlow()
+            .map {
+                converter?.deserialize<Task>(it) ?: error("Failed to deserialize to Task: $it")
+            }.scan(emptyList<Task>()) { list, task ->
+                list + task
+            }
 }
