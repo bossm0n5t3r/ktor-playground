@@ -30,13 +30,18 @@ dependencies {
     implementation(libs.ktor.server.websockets)
 
     testImplementation(libs.ktor.server.test.host)
-    testImplementation(libs.kotlin.test.junit)
+    testImplementation(libs.kotlin.test.junit5)
     testImplementation(libs.ktor.client.content.negotiation)
     testImplementation(libs.json.path)
+    testImplementation(libs.ktor.client.websockets)
 }
 
 kotlin {
     jvmToolchain(21)
+}
+
+tasks.withType<Test> {
+    useJUnitPlatform()
 }
 
 ktlint {
