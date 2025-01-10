@@ -35,6 +35,7 @@ dependencies {
     implementation(libs.exposed.jdbc)
     implementation(libs.exposed.kotlin)
     implementation(libs.exposed.json)
+    implementation(libs.postgresql)
 
     testImplementation(libs.ktor.server.test.host)
     testImplementation(libs.kotlin.test.junit5)
