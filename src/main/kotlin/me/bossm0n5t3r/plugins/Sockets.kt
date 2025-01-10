@@ -21,7 +21,7 @@ import me.bossm0n5t3r.model.TaskRepository
 import java.util.Collections
 import kotlin.time.Duration.Companion.seconds
 
-fun Application.configureSockets() {
+fun Application.configureSockets(repository: TaskRepository) {
     install(WebSockets) {
         contentConverter = KotlinxWebsocketSerializationConverter(Json)
         pingPeriod = 15.seconds
@@ -35,17 +35,17 @@ fun Application.configureSockets() {
             Collections.synchronizedList<WebSocketServerSession>(ArrayList())
 
         webSocket("/websocket/tasks") {
-            sendAllTasks()
+            sendAllTasks(repository)
             close(CloseReason(CloseReason.Codes.NORMAL, "All done"))
         }
 
         webSocket("/websocket/tasks2") {
             sessions.add(this)
-            sendAllTasks()
+            sendAllTasks(repository)
 
             while (true) {
                 val newTask = receiveDeserialized<Task>()
-                TaskRepository.addTask(newTask)
+                repository.addTask(newTask)
                 for (session in sessions) {
                     session.sendSerialized(newTask)
                 }
@@ -54,8 +54,8 @@ fun Application.configureSockets() {
     }
 }
 
-private suspend fun DefaultWebSocketServerSession.sendAllTasks() {
-    for (task in TaskRepository.allTasks()) {
+private suspend fun DefaultWebSocketServerSession.sendAllTasks(repository: TaskRepository) {
+    for (task in repository.allTasks()) {
         sendSerialized(task)
         delay(1000)
     }

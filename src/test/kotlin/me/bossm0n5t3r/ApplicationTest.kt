@@ -22,9 +22,9 @@ import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.scan
 import kotlinx.serialization.json.Json
+import me.bossm0n5t3r.model.FakeTaskRepository
 import me.bossm0n5t3r.model.Priority
 import me.bossm0n5t3r.model.Task
-import me.bossm0n5t3r.model.TaskRepository
 import me.bossm0n5t3r.plugins.configureRouting
 import me.bossm0n5t3r.plugins.configureSerialization
 import me.bossm0n5t3r.plugins.configureSockets
@@ -36,10 +36,12 @@ import kotlin.test.assertContentEquals
 import kotlin.test.assertEquals
 
 class ApplicationTest {
+    private val repository = FakeTaskRepository()
+
     @BeforeEach
     @AfterEach
     fun clear() {
-        TaskRepository.resetAllTasks()
+        repository.resetAllTasks()
     }
 
     @Test
@@ -137,9 +139,9 @@ class ApplicationTest {
     fun testWebSocketRoot() =
         testApplication {
             application {
-                configureRouting()
+                configureRouting(repository)
                 configureSerialization()
-                configureSockets()
+                configureSockets(repository)
             }
 
             val client =

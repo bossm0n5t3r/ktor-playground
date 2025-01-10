@@ -2,6 +2,7 @@ package me.bossm0n5t3r
 
 import io.ktor.server.application.Application
 import io.ktor.server.netty.EngineMain
+import me.bossm0n5t3r.model.FakeTaskRepository
 import me.bossm0n5t3r.plugins.configureRouting
 import me.bossm0n5t3r.plugins.configureSerialization
 import me.bossm0n5t3r.plugins.configureSockets
@@ -12,8 +13,10 @@ fun main(args: Array<String>) {
 }
 
 fun Application.module() {
-    configureRouting()
+    val repository = FakeTaskRepository()
+
+    configureRouting(repository)
     configureSerialization()
-    configureTemplating()
-    configureSockets()
+    configureTemplating(repository)
+    configureSockets(repository)
 }
