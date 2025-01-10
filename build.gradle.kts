@@ -28,6 +28,7 @@ dependencies {
     implementation(libs.ktor.server.content.negotiation)
     implementation(libs.ktor.server.thymeleaf)
     implementation(libs.ktor.server.websockets)
+    implementation(libs.ktor.server.status.pages)
 
     testImplementation(libs.ktor.server.test.host)
     testImplementation(libs.kotlin.test.junit5)
