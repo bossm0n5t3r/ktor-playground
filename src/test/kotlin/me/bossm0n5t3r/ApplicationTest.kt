@@ -24,24 +24,12 @@ import kotlinx.coroutines.flow.scan
 import kotlinx.serialization.json.Json
 import me.bossm0n5t3r.model.Priority
 import me.bossm0n5t3r.model.Task
-import me.bossm0n5t3r.model.TaskRepository
-import me.bossm0n5t3r.plugins.configureRouting
-import me.bossm0n5t3r.plugins.configureSerialization
-import me.bossm0n5t3r.plugins.configureSockets
-import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.BeforeEach
 import kotlin.test.Test
 import kotlin.test.assertContains
 import kotlin.test.assertContentEquals
 import kotlin.test.assertEquals
 
 class ApplicationTest {
-    @BeforeEach
-    @AfterEach
-    fun clear() {
-        TaskRepository.resetAllTasks()
-    }
-
     @Test
     fun testRoot() =
         testApplication {
@@ -137,9 +125,7 @@ class ApplicationTest {
     fun testWebSocketRoot() =
         testApplication {
             application {
-                configureRouting()
-                configureSerialization()
-                configureSockets()
+                module()
             }
 
             val client =

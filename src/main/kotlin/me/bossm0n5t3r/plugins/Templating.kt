@@ -16,7 +16,7 @@ import me.bossm0n5t3r.model.Task
 import me.bossm0n5t3r.model.TaskRepository
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver
 
-fun Application.configureTemplating() {
+fun Application.configureTemplating(repository: TaskRepository) {
     install(Thymeleaf) {
         setTemplateResolver(
             ClassLoaderTemplateResolver().apply {
@@ -30,7 +30,7 @@ fun Application.configureTemplating() {
     routing {
         route("/website/tasks") {
             get {
-                val tasks = TaskRepository.allTasks()
+                val tasks = repository.allTasks()
                 call.respond(
                     ThymeleafContent("all-tasks", mapOf("tasks" to tasks)),
                 )
@@ -42,7 +42,7 @@ fun Application.configureTemplating() {
                     call.respond(HttpStatusCode.BadRequest)
                     return@get
                 }
-                val task = TaskRepository.taskByName(name)
+                val task = repository.taskByName(name)
                 if (task == null) {
                     call.respond(HttpStatusCode.NotFound)
                     return@get
@@ -60,7 +60,7 @@ fun Application.configureTemplating() {
                 }
                 try {
                     val priority = Priority.valueOf(priorityAsText)
-                    val tasks = TaskRepository.tasksByPriority(priority)
+                    val tasks = repository.tasksByPriority(priority)
 
                     if (tasks.isEmpty()) {
                         call.respond(HttpStatusCode.NotFound)
@@ -91,14 +91,14 @@ fun Application.configureTemplating() {
                 }
                 try {
                     val priority = Priority.valueOf(params.third)
-                    TaskRepository.addTask(
+                    repository.addTask(
                         Task(
                             params.first,
                             params.second,
                             priority,
                         ),
                     )
-                    val tasks = TaskRepository.allTasks()
+                    val tasks = repository.allTasks()
                     call.respond(
                         ThymeleafContent("all-tasks", mapOf("tasks" to tasks)),
                     )
