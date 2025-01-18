@@ -4,6 +4,7 @@ import io.ktor.server.application.Application
 import me.bossm0n5t3r.db.TaskTable
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
+import org.jetbrains.exposed.sql.deleteAll
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.transactions.transaction
 
@@ -20,8 +21,10 @@ fun Application.configureDatabases() {
 }
 
 private fun initializeDatabase() {
+    SchemaUtils.drop(TaskTable)
     SchemaUtils.create(TaskTable)
 
+    TaskTable.deleteAll()
     TaskTable.insert {
         it[name] = "cleaning"
         it[description] = "Clean the house"
@@ -41,15 +44,5 @@ private fun initializeDatabase() {
         it[name] = "painting"
         it[description] = "Paint the fence"
         it[priority] = "Medium"
-    }
-    TaskTable.insert {
-        it[name] = "exercising"
-        it[description] = "Walk the dog"
-        it[priority] = "Medium"
-    }
-    TaskTable.insert {
-        it[name] = "meditating"
-        it[description] = "Contemplate the infinite"
-        it[priority] = "High"
     }
 }
