@@ -7,7 +7,6 @@ import org.jetbrains.exposed.dao.IntEntity
 import org.jetbrains.exposed.dao.IntEntityClass
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.dao.id.IntIdTable
-import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.Transaction
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 
@@ -27,10 +26,7 @@ class TaskDAO(
     var priority by TaskTable.priority
 }
 
-suspend fun <T> suspendTransaction(
-    database: Database,
-    block: Transaction.() -> T,
-): T = newSuspendedTransaction(Dispatchers.IO, statement = block, db = database)
+suspend fun <T> suspendTransaction(block: Transaction.() -> T): T = newSuspendedTransaction(Dispatchers.IO, statement = block)
 
 fun daoToModel(dao: TaskDAO) =
     Task(
