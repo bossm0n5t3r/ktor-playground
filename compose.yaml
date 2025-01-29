@@ -1,0 +1,7 @@
+services:
+  ktor-playground:
+    image: ktor-playground:latest
+    container_name: ktor-playground
+    build: .
+    ports:
+      - "8080:8080"
