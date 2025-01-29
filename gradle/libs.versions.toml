@@ -1,6 +1,6 @@
 [versions]
 kotlin-version = "2.1.0"
-ktor-version = "3.0.2"
+ktor-version = "3.0.3"
 logback-version = "1.5.15"
 ktlint = "12.1.2"
 json-path = "2.9.0"
