@@ -30,7 +30,6 @@ dependencies {
     implementation(libs.ktor.server.websockets)
     implementation(libs.ktor.server.status.pages)
     implementation(libs.exposed.core)
-    implementation(libs.exposed.crypt)
     implementation(libs.exposed.dao)
     implementation(libs.exposed.jdbc)
     implementation(libs.exposed.kotlin)

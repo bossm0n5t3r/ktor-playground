@@ -4,8 +4,8 @@ import me.bossm0n5t3r.db.TaskDAO
 import me.bossm0n5t3r.db.TaskTable
 import me.bossm0n5t3r.db.daoToModel
 import me.bossm0n5t3r.db.suspendTransaction
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
-import org.jetbrains.exposed.sql.deleteWhere
+import org.jetbrains.exposed.v1.core.eq
+import org.jetbrains.exposed.v1.jdbc.deleteWhere
 
 class H2TaskRepository : TaskRepository {
     override suspend fun allTasks(): List<Task> =

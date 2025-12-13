@@ -4,7 +4,7 @@ ktor-version = "3.3.3"
 logback-version = "1.5.22"
 ktlint = "14.0.1"
 json-path = "2.10.0"
-exposed = "0.57.0"
+exposed = "1.0.0-rc-4"
 postgresql = "42.7.8"
 h2 = "2.4.240"
 
