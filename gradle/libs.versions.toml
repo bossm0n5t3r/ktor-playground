@@ -1,12 +1,12 @@
 [versions]
-kotlin-version = "2.1.0"
-ktor-version = "3.0.3"
-logback-version = "1.5.15"
-ktlint = "12.1.2"
-json-path = "2.9.0"
+kotlin-version = "2.2.21"
+ktor-version = "3.3.3"
+logback-version = "1.5.22"
+ktlint = "14.0.1"
+json-path = "2.10.0"
 exposed = "0.57.0"
-postgresql = "42.7.4"
-h2 = "2.3.232"
+postgresql = "42.7.8"
+h2 = "2.4.240"
 
 [libraries]
 ktor-server-core = { module = "io.ktor:ktor-server-core-jvm", version.ref = "ktor-version" }
