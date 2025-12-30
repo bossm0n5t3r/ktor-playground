@@ -45,7 +45,11 @@ dependencies {
 }
 
 kotlin {
-    jvmToolchain(21)
+    jvmToolchain(
+        libs.versions.jdk.version
+            .get()
+            .toInt(),
+    )
 }
 
 tasks.withType<Test> {
