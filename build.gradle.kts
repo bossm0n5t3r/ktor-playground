@@ -57,5 +57,8 @@ tasks.withType<Test> {
 }
 
 ktlint {
-    version.set("1.6.0")
+    version.set(
+        libs.versions.pinterest.ktlint
+            .get(),
+    )
 }

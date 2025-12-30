@@ -2,7 +2,8 @@
 kotlin-version = "2.3.0"
 ktor-version = "3.3.3"
 logback-version = "1.5.22"
-ktlint = "14.0.1"
+ktlint-gradle = "14.0.1"
+pinterest-ktlint = "1.6.0"
 json-path = "2.10.0"
 exposed = "1.0.0-rc-4"
 postgresql = "42.7.8"
@@ -38,4 +39,4 @@ ktor-client-websockets = { module = "io.ktor:ktor-client-websockets", version.re
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin-version" }
 serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin-version" }
 ktor = { id = "io.ktor.plugin", version.ref = "ktor-version" }
-ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
+ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint-gradle" }
